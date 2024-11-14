@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<h1>Страны и города</h1>
+<select id="yourcountry">
+    <option value="">Выберите страну</option>
+</select>
+<div id="allcities"></div>
+
+<script>
+$(document).ready(function () {
+    $.ajax({
+        url:"country.php",
+        method:"GET",   success:function(data) {
+
+            $("#yourcountry").append(data);
+
+        }
+        });
+
+    $('#yourcountry').change(function(){
+        var countryId=$(this).val();
+        if(countryId) {
+            $.ajax({
+                url: "city.php",
+                method: "POST",
+                data: {countryID: countryId},
+                success: function (data) {
+                    $('#allcities').html(data);
+                }
+            });
+        }else{
+        $('#allcities').html('');
+        }
+    });});
+</script>
